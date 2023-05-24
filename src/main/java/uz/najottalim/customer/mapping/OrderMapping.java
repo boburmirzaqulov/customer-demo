@@ -5,11 +5,26 @@ import uz.najottalim.customer.entity.Order;
 
 public class OrderMapping {
     public static Order toEntity(OrderDTO orderDTO){
-        return null;
+        if (orderDTO == null) return null;
+        return new Order(
+                orderDTO.getId(),
+                orderDTO.getOrderDate(),
+                orderDTO.getDeliveryDate(),
+                orderDTO.getStatus(),
+                CustomerMapping.toEntity(orderDTO.getCustomer()),
+                null
+        );
     }
 
     public static OrderDTO toDto(Order order){
-        return null;
+        if (order == null) return null;
+        return new OrderDTO(
+                order.getId(),
+                order.getOrderDate(),
+                order.getDeliveryDate(),
+                order.getStatus(),
+                CustomerMapping.toDtoForOrder(order.getCustomer())
+        );
     }
 
     public static OrderDTO toDtoForCustomer(Order order){

@@ -25,4 +25,13 @@ public class CustomerMapping {
                         .collect(Collectors.toList())
         );
     }
+
+    public static CustomerDTO toDtoForOrder(Customer customer){
+        if (customer == null) return null;
+        return new CustomerDTO(
+                customer.getId(),
+                customer.getName(),
+                customer.getTier()
+        );
+    }
 }

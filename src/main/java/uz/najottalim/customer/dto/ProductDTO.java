@@ -1,5 +1,6 @@
 package uz.najottalim.customer.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,5 +15,6 @@ public class ProductDTO {
     private String category;
     private String name;
     private Double price;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<OrderDTO> orders;
 }

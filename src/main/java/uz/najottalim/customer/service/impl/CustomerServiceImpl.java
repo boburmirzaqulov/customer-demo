@@ -62,4 +62,24 @@ public class CustomerServiceImpl implements CustomerService {
                     .body(ErrorDTO.builder().errors(e.getMessage()).build());
         }
     }
+
+    @Override
+    public ResponseEntity<?> deleteById(Long id) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(id);
+        if (optionalCustomer.isPresent()){
+            customerRepository.delete(optionalCustomer.get());
+            return ResponseEntity.ok("success");
+        }
+        return ResponseEntity.status(404)
+                .body(
+                        ErrorDTO.builder()
+                                .errors("Not found")
+                                .build()
+                );
+    }
+
+    @Override
+    public ResponseEntity<?> updateCustomer(CustomerDTO customerDTO, Long id) {
+        return null;
+    }
 }

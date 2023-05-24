@@ -10,4 +10,8 @@ public interface CustomerService {
     ResponseEntity<?> getById(Long id);
 
     ResponseEntity<?> addCustomer(CustomerDTO customerDTO);
+
+    ResponseEntity<?> deleteById(Long id);
+
+    ResponseEntity<?> updateCustomer(CustomerDTO customerDTO, Long id);
 }

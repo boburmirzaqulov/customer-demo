@@ -28,8 +28,11 @@ public class Order {
     private Customer customer;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "order_product_relationship",
-            joinColumns = {@JoinColumn(table = "product_order", name = "order_id", referencedColumnName = "id")},
+            joinColumns = {
+                @JoinColumn(table = "product_order", name = "order_id", referencedColumnName = "id")
+            },
             inverseJoinColumns = {
-                    @JoinColumn(table = "product", referencedColumnName = "id", name = "product_id")})
+                @JoinColumn(table = "product", referencedColumnName = "id", name = "product_id")
+            })
     private List<Product> products;
 }
