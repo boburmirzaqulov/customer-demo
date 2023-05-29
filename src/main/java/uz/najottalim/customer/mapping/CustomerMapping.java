@@ -20,9 +20,7 @@ public class CustomerMapping {
                 customer.getId(),
                 customer.getName(),
                 customer.getTier(),
-                customer.getOrders()==null?null:customer.getOrders().stream()
-                        .map(OrderMapping::toDtoForCustomer)
-                        .collect(Collectors.toList())
+                null
         );
     }
 

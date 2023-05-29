@@ -7,7 +7,7 @@ public class OrderMapping {
     public static Order toEntity(OrderDTO orderDTO){
         if (orderDTO == null) return null;
         return new Order(
-                orderDTO.getId(),
+                null,
                 orderDTO.getOrderDate(),
                 orderDTO.getDeliveryDate(),
                 orderDTO.getStatus(),
@@ -24,6 +24,17 @@ public class OrderMapping {
                 order.getDeliveryDate(),
                 order.getStatus(),
                 CustomerMapping.toDtoForOrder(order.getCustomer())
+        );
+    }
+
+    public static OrderDTO toDtoForAll(Order order){
+        if (order == null) return null;
+        return new OrderDTO(
+                order.getId(),
+                order.getOrderDate(),
+                order.getDeliveryDate(),
+                order.getStatus(),
+                null
         );
     }
 

@@ -7,6 +7,7 @@ import uz.najottalim.customer.dto.ErrorDTO;
 import uz.najottalim.customer.dto.OrderDTO;
 import uz.najottalim.customer.entity.Customer;
 import uz.najottalim.customer.entity.Order;
+import uz.najottalim.customer.exception.NoResourceFoundException;
 import uz.najottalim.customer.mapping.OrderMapping;
 import uz.najottalim.customer.repository.CustomerRepository;
 import uz.najottalim.customer.repository.OrderRepository;
@@ -25,44 +26,36 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResponseEntity<OrderDTO> getOrderById(Long id) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
-        return optionalOrder.map(order -> ResponseEntity.ok(
-                OrderMapping.toDto(order)
-        )).orElseGet(() -> ResponseEntity.status(404)
-                .body(
-                        null
-                ));
+        if (optionalOrder.isEmpty()) throw new NoResourceFoundException("order not found by id");
+        return ResponseEntity.ok(
+                OrderMapping.toDto(optionalOrder.get())
+        );
     }
 
     @Override
     public ResponseEntity<OrderDTO> addOrder(Long customerId, OrderDTO orderDTO) {
         Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if (optionalCustomer.isEmpty() || orderDTO == null) {
-            return ResponseEntity.status(404)
-                    .body(
-                            null
-                    );
+            throw new NoResourceFoundException("customer not found by id or order empty");
         }
         Order order = OrderMapping.toEntity(orderDTO);
         order.setCustomer(optionalCustomer.get());
-        order.setId(null);
-        order = orderRepository.save(order);
-        return ResponseEntity.ok(
-                OrderMapping.toDto(order)
-        );
+        try {
+            order = orderRepository.save(order);
+            return ResponseEntity.ok(
+                    OrderMapping.toDto(order)
+            );
+        }catch (Exception e){
+            throw new NoResourceFoundException(e.getMessage());
+        }
     }
 
     @Override
     public ResponseEntity<List<OrderDTO>> getAll() {
         List<Order> all = orderRepository.findAll();
-        if (all.isEmpty()){
-            return ResponseEntity.status(404)
-                    .body(
-                            null
-                    );
-        }
         return ResponseEntity.ok(
                 all.stream()
-                        .map(OrderMapping::toDto)
+                        .map(OrderMapping::toDtoForAll)
                         .collect(Collectors.toList())
         );
     }
